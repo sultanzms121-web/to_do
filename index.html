@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Roster</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- Sidebar: brand, controls, alphabet index -->
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <div class="brand">
+        <h1>The Roster</h1>
+        <p class="subtitle" id="subtitle">no cards filed yet</p>
+      </div>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch between dark and light theme">
+        <span class="theme-toggle-dot"></span>
+        <span id="themeToggleLabel">dark</span>
+      </button>
+    </div>
+
+    <div class="search-wrap">
+      <input type="search" id="searchInput" placeholder="search the roster…  ( / )" aria-label="Search cards">
+    </div>
+
+    <button class="btn-new" id="openFormBtn" type="button">+ New card <span class="kbd">N</span></button>
+
+    <div class="sort-wrap">
+      <label for="sortSelect" class="field-label-inline">sort by</label>
+      <select id="sortSelect" aria-label="Sort roster">
+        <option value="last">Last name</option>
+        <option value="first">First name</option>
+        <option value="age">Age</option>
+        <option value="recent">Recently added</option>
+      </select>
+    </div>
+
+    <button class="btn-ghost btn-block" id="exportBtn" type="button">Export CSV</button>
+
+    <div class="stat-strip" id="statStrip"></div>
+
+    <div class="rail-wrap">
+      <span class="rail-label">index</span>
+      <nav class="rail" id="rail" aria-label="Jump to letter"></nav>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <div class="main-header">
+      <h2>Directory</h2>
+      <div class="dept-chips" id="deptChips"></div>
+    </div>
+
+    <!-- Card form (add / edit) -->
+    <section class="card-drawer" id="cardDrawer" aria-hidden="true">
+      <form id="cardForm" novalidate>
+        <div class="drawer-head">
+          <h2 id="drawerTitle">New card</h2>
+          <button type="button" class="icon-close" id="closeFormBtn" aria-label="Close">&times;</button>
+        </div>
+
+        <div class="drawer-body">
+          <div class="photo-field">
+            <label for="photoInput" class="photo-drop" id="photoDrop">
+              <img id="photoPreview" alt="" />
+              <span class="photo-placeholder" id="photoPlaceholder">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 15.5a4 4 0 100-8 4 4 0 000 8z" stroke="currentColor" stroke-width="1.3"/><path d="M3 8.5A1.5 1.5 0 014.5 7H7l1-2h8l1 2h2.5A1.5 1.5 0 0121 8.5V18a1.5 1.5 0 01-1.5 1.5h-15A1.5 1.5 0 013 18V8.5z" stroke="currentColor" stroke-width="1.3"/></svg>
+                <span>add photo</span>
+              </span>
+            </label>
+            <input type="file" id="photoInput" accept="image/*" hidden>
+            <button type="button" id="removePhotoBtn" class="text-btn" hidden>remove photo</button>
+          </div>
+
+          <div class="field-grid">
+            <div class="field">
+              <label for="firstName">First name</label>
+              <input type="text" id="firstName" name="firstName" required maxlength="40" autocomplete="off">
+            </div>
+            <div class="field">
+              <label for="lastName">Last name</label>
+              <input type="text" id="lastName" name="lastName" required maxlength="40" autocomplete="off">
+            </div>
+            <div class="field field-small">
+              <label for="age">Age</label>
+              <input type="number" id="age" name="age" min="0" max="130" required inputmode="numeric">
+            </div>
+            <div class="field field-wide">
+              <label for="contact">Contact number</label>
+              <input type="tel" id="contact" name="contact" required maxlength="30" placeholder="+1 555 000 0000">
+            </div>
+            <div class="field field-wide">
+              <label for="department">Department</label>
+              <input type="text" id="department" name="department" maxlength="60" autocomplete="off" placeholder="e.g. Design, Engineering, Sales">
+            </div>
+            <div class="field field-wide field-pin">
+              <label class="pin-check">
+                <input type="checkbox" id="pinned">
+                <span>Pin this card to the top</span>
+              </label>
+            </div>
+          </div>
+
+          <p class="form-error" id="formError" role="alert"></p>
+        </div>
+
+        <div class="drawer-foot">
+          <button type="button" class="btn-ghost" id="cancelFormBtn">Cancel</button>
+          <button type="submit" class="btn-primary" id="saveBtn">Save card</button>
+        </div>
+      </form>
+    </section>
+    <div class="drawer-backdrop" id="drawerBackdrop" hidden></div>
+
+    <!-- List -->
+    <section class="roster" id="roster"></section>
+
+    <div class="empty-state" id="emptyState">
+      <div class="empty-card">
+        <span class="empty-mark">—</span>
+      </div>
+      <h2>The roster is empty</h2>
+      <p>File your first card to begin building the directory.</p>
+      <button class="btn-new" id="emptyNewBtn" type="button">+ New card</button>
+    </div>
+
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <span id="toastText"></span>
+  <button type="button" id="toastUndo">Undo</button>
+</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>
